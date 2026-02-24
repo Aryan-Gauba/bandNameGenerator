@@ -1,18 +1,21 @@
 import express from "express";
 import bodyParser from "body-parser";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const port = 3000;
 
-//Step 3 - Make the styling show up.
-//Hint 1: CSS files are static files!
-//Hint 2: The header and footer are partials.
-//Hint 3: Add the CSS link in header.ejs
+// Recreate __dirname for ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-//Step 4 - Add a dynamic year to the footer.
-//Hint: Google to find out how to get the current year using JS.
+// ... your app = express() setup ...
 
-app.use(express.static("public"));
+// Use the absolute paths
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
@@ -38,9 +41,9 @@ app.post("/submit", (req, res) => {
   //3. Test to make sure that the random words display in the h1 element in index.ejs
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Listening on port ${port}`);
+// });
 
 const adj = [
   "abandoned",
@@ -5702,3 +5705,5 @@ const noun = [
   "zoot-suit",
   "zucchini",
 ];
+
+export default app;
